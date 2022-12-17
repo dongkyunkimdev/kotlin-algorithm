@@ -1,3 +1,5 @@
+import java.util.*
+
 /**
  * Example:
  * var ti = TreeNode(5)
@@ -10,18 +12,23 @@
  */
 class Solution {
     fun levelOrder(root: TreeNode?): List<List<Int>> {
-        val resultList = mutableListOf<MutableList<Int>>()
-        preorderTraverse(root, resultList, 0)
+        if (root == null) return emptyList()
+        val nodeQueue = ArrayDeque<TreeNode>()
+        val resultList = mutableListOf<List<Int>>()
+
+        nodeQueue.offer(root)
+        while (nodeQueue.isNotEmpty()) {
+            val size = nodeQueue.size
+            val currentLevelList = mutableListOf<Int>()
+            for (i in 0 until size) {
+                val currentNode = nodeQueue.poll()
+                currentLevelList.add(currentNode.`val`)
+                if (currentNode.left != null) nodeQueue.offer(currentNode.left)
+                if (currentNode.right != null) nodeQueue.offer(currentNode.right)
+            }
+            resultList.add(currentLevelList)
+        }
+
         return resultList
-    }
-
-    private fun preorderTraverse(node: TreeNode?, resultList: MutableList<MutableList<Int>>, level: Int) {
-        if (node == null) return
-
-        val currentLevelList = resultList.getOrElse(level) { mutableListOf<Int>().also { resultList.add(it) } }
-        currentLevelList.add(node.`val`)
-
-        preorderTraverse(node.left, resultList, level + 1)
-        preorderTraverse(node.right, resultList, level + 1)
     }
 }
