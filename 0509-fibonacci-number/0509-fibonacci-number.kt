@@ -1,12 +1,10 @@
 class Solution {
     fun fib(n: Int): Int {
-        val array = arrayOf(0, 1)
-        if (n < array.size) {
-            return array[n]
-        } else {
-            val result = fib(n - 1) + fib(n - 2)
-            array.plus(result)
-            return result
+        if (n <= 1) return n
+        val fibList = mutableListOf(0, 1)
+        for (i in 2..n) {
+            fibList.add(fibList[i - 1] + fibList[i - 2])
         }
+        return fibList[n]
     }
 }
